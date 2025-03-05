@@ -14,7 +14,9 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@cornal-nest-nx-monorepo/order": ["libs/order/src/index.ts"],
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

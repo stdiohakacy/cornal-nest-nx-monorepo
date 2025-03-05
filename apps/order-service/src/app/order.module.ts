@@ -1,27 +1,23 @@
 import { Module } from '@nestjs/common';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { OrderController } from './order.controller';
-import { OrderService } from './order.service';
-
+import {
+  CreateOrderUseCase,
+  OrderRepositoryImpl,
+} from '@cornal-nest-nx-monorepo/order';
+import { OrderController } from '../adapters/order.controller';
 @Module({
-  imports: [
-    ClientsModule.register([
-      {
-        name: 'KAFKA_SERVICE',
-        transport: Transport.KAFKA,
-        options: {
-          client: {
-            brokers: ['localhost:9092'],
-          },
-          consumer: {
-            groupId: 'order-consumer',
-          },
-        },
-      },
-    ]),
-  ],
+  imports: [],
   controllers: [OrderController],
-  providers: [OrderService],
-  exports: [OrderService],
+  providers: [
+    {
+      provide: OrderRepositoryImpl,
+      useClass: OrderRepositoryImpl,
+    },
+    {
+      provide: CreateOrderUseCase,
+      useFactory: (orderRepository: OrderRepositoryImpl) =>
+        new CreateOrderUseCase(orderRepository),
+      inject: [OrderRepositoryImpl],
+    },
+  ],
 })
 export class OrderModule {}
