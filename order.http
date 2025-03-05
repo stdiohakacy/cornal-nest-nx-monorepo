@@ -3,11 +3,11 @@ POST http://localhost:3000/orders
 Content-Type: application/json
 
 {
-    "items": [
-        {
-            "productId": "1",
-            "quantity": 1,
-            "price": 100
-        }
-    ]
+  "items": [
+    {
+      "productId": "1",
+      "quantity": 1,
+      "price": 100
+    }
+  ]
 }
