@@ -1,38 +1,15 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import {
   CreateOrderUseCase,
   OrderRepositoryImpl,
   KafkaOrderEventPublisher,
 } from '@cornal-nest-nx-monorepo/order';
 import { OrderController } from './adapters/order.controller';
-import { ClientsModule, Transport } from '@nestjs/microservices';
 @Module({
-  // imports: [
-  //   ClientsModule.register([
-  //     {
-  //       name: 'KAFKA_SERVICE',
-  //       transport: Transport.KAFKA,
-  //       options: {
-  //         client: {
-  //           brokers: ['localhost:9092'],
-  //         },
-  //         consumer: {
-  //           groupId: 'order-consumer',
-  //         },
-  //       },
-  //     },
-  //   ]),
-  // ],
   controllers: [OrderController],
   providers: [
-    {
-      provide: OrderRepositoryImpl,
-      useClass: OrderRepositoryImpl,
-    },
-    {
-      provide: KafkaOrderEventPublisher,
-      useClass: KafkaOrderEventPublisher,
-    },
+    OrderRepositoryImpl,
+    KafkaOrderEventPublisher,
     {
       provide: CreateOrderUseCase,
       useFactory: (
@@ -43,4 +20,14 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     },
   ],
 })
-export class OrderModule {}
+export class OrderModule implements OnModuleInit, OnModuleDestroy {
+  constructor(private readonly eventPublisher: KafkaOrderEventPublisher) {}
+
+  async onModuleInit() {
+    await this.eventPublisher.start();
+  }
+
+  async onModuleDestroy() {
+    await this.eventPublisher.stop();
+  }
+}

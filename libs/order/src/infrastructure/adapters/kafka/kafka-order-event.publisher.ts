@@ -1,33 +1,53 @@
-import { Injectable } from '@nestjs/common';
-import { Kafka } from 'kafkajs';
+import { Kafka, Producer } from 'kafkajs';
 import { OrderEventPublisherInterface } from 'libs/order/src/application/ports/order-event.publisher.interface';
 
 export class KafkaOrderEventPublisher implements OrderEventPublisherInterface {
-  private kafka = new Kafka({
-    clientId: 'order-service',
-    brokers: ['localhost:9092'],
-  });
+  private kafka: Kafka;
+  private producer: Producer;
+  private readonly topic = 'order-created';
+  constructor() {
+    this.kafka = new Kafka({
+      clientId: 'order-service',
+      brokers: ['localhost:9092'],
+    });
+    this.producer = this.kafka.producer();
+  }
 
-  private producer = this.kafka.producer();
+  async start(): Promise<void> {
+    try {
+      await this.producer.connect();
+      console.log('[Kafka] Producer connected');
+    } catch (error) {
+      console.error(`[Kafka] Error connecting producer: `, error);
+    }
+  }
 
   async publishOrderCreatedEvent(
     orderId: string,
     items: { productId: string; quantity: number; price: number }[]
   ): Promise<void> {
-    await this.producer.connect();
-    const test = await this.producer.send({
-      topic: 'order-created',
-      messages: [
-        {
-          key: orderId,
-          value: JSON.stringify({
-            orderId,
-            items,
-          }),
-        },
-      ],
-    });
-    console.log(test);
-    await this.producer.disconnect();
+    try {
+      await this.producer.send({
+        topic: this.topic,
+        messages: [
+          {
+            key: orderId,
+            value: JSON.stringify({ orderId, items }),
+          },
+        ],
+      });
+      console.log(`[Kafka] OrderCreated event sent: ${orderId}`);
+    } catch (error) {
+      console.error(`[Kafka] Error sending event for order ${orderId}:`, error);
+    }
+  }
+
+  async stop(): Promise<void> {
+    try {
+      await this.producer.disconnect();
+      console.log('[Kafka] Producer disconnected');
+    } catch (error) {
+      console.error(`[Kafka] Error disconnecting producer: `, error);
+    }
   }
 }
