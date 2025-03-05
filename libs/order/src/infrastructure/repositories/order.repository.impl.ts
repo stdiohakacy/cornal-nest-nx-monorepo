@@ -1,4 +1,4 @@
-import { OrderRepositoryInterface } from '../../application/ports/order.repository';
+import { OrderRepositoryInterface } from '../../application/ports/order.repository.interface';
 import { OrderAggregate } from '../../domain/aggregate-roots/order.entity';
 
 export class OrderRepositoryImpl implements OrderRepositoryInterface {

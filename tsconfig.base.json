@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@cornal-nest-nx-monorepo/order": ["libs/order/src/index.ts"],
+      "@cornal-nest-nx-monorepo/payment": ["libs/payment/src/index.ts"],
     }
   },
   "exclude": ["node_modules", "tmp"]
