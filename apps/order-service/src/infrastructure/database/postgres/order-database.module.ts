@@ -13,7 +13,7 @@ import { OrderOrmEntity } from './order.orm-entity';
       password: process.env.DB_PASS || 'postgres',
       database: process.env.DB_NAME || 'cornal_order_db',
       entities: [OrderOrmEntity],
-      synchronize: true,
+      synchronize: false,
       logging: true,
     }),
     TypeOrmModule.forFeature([OrderOrmEntity]),

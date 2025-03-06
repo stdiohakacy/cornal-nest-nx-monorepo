@@ -15,13 +15,21 @@ import { OrderDatabaseModule } from './infrastructure/database/postgres/order-da
       provide: 'ORDER_REPOSITORY',
       useClass: OrderRepositoryImpl,
     },
+    // {
+    //   provide: CreateOrderUseCase,
+    //   useFactory: (
+    //     orderRepository: OrderRepositoryInMemoryImpl,
+    //     eventPublisher: KafkaOrderEventPublisher
+    //   ) => new CreateOrderUseCase(orderRepository, eventPublisher),
+    //   inject: [OrderRepositoryInMemoryImpl, KafkaOrderEventPublisher],
+    // },
     {
       provide: CreateOrderUseCase,
       useFactory: (
-        orderRepository: OrderRepositoryInMemoryImpl,
+        orderRepository: OrderRepositoryImpl,
         eventPublisher: KafkaOrderEventPublisher
       ) => new CreateOrderUseCase(orderRepository, eventPublisher),
-      inject: [OrderRepositoryInMemoryImpl, KafkaOrderEventPublisher],
+      inject: ['ORDER_REPOSITORY', KafkaOrderEventPublisher],
     },
   ],
 })

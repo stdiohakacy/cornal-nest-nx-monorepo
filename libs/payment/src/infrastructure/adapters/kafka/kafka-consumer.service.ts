@@ -38,12 +38,6 @@ export class KafkaConsumerService {
       await this.connect();
     }
 
-    setTimeout(async () => {
-      console.log(`[Kafka] No messages received for a while, reconnecting...`);
-      await this.disconnect();
-      await this.connect();
-    }, 60_000);
-
     await this.consumer.run({
       eachMessage: async ({ message, topic, partition }) => {
         try {
