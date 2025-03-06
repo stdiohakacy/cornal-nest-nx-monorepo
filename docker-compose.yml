@@ -2,7 +2,7 @@ version: '3'
 services:
   zookeeper:
     image: bitnami/zookeeper:latest
-    container_name: zookeeper
+    container_name: cornal-zookeeper
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
     ports:
@@ -10,7 +10,7 @@ services:
 
   kafka:
     image: bitnami/kafka:latest
-    container_name: kafka
+    container_name: cornal-kafka
     depends_on:
       - zookeeper
     ports:
@@ -21,3 +21,12 @@ services:
       - KAFKA_LISTENERS=PLAINTEXT://:9092
       - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
       - ALLOW_PLAINTEXT_LISTENER=yes
+  postgres:
+    image: postgres:latest
+    container_name: cornal-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cornal_order_db
+    ports:
+      - '5432:5432'

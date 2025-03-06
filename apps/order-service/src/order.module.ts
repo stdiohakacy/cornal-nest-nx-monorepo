@@ -1,22 +1,27 @@
 import { Module, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
-import {
-  CreateOrderUseCase,
-  OrderRepositoryImpl,
-  KafkaOrderEventPublisher,
-} from '@cornal-nest-nx-monorepo/order';
-import { OrderController } from './adapters/order.controller';
+import { CreateOrderUseCase } from '@cornal-nest-nx-monorepo/order';
+import { OrderController } from './adapters/controllers/order.controller';
+import { KafkaOrderEventPublisher } from './infrastructure/messaging/kafka-order-event.publisher';
+import { OrderRepositoryInMemoryImpl } from './infrastructure/database/inmemory/order.repository.inmemory.impl';
+import { OrderRepositoryImpl } from './infrastructure/database/postgres/order.repository.impl';
+import { OrderDatabaseModule } from './infrastructure/database/postgres/order-database.module';
 @Module({
+  imports: [OrderDatabaseModule],
   controllers: [OrderController],
   providers: [
-    OrderRepositoryImpl,
+    OrderRepositoryInMemoryImpl,
     KafkaOrderEventPublisher,
+    {
+      provide: 'ORDER_REPOSITORY',
+      useClass: OrderRepositoryImpl,
+    },
     {
       provide: CreateOrderUseCase,
       useFactory: (
-        orderRepository: OrderRepositoryImpl,
+        orderRepository: OrderRepositoryInMemoryImpl,
         eventPublisher: KafkaOrderEventPublisher
       ) => new CreateOrderUseCase(orderRepository, eventPublisher),
-      inject: [OrderRepositoryImpl, KafkaOrderEventPublisher],
+      inject: [OrderRepositoryInMemoryImpl, KafkaOrderEventPublisher],
     },
   ],
 })

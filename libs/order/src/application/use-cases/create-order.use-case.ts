@@ -1,4 +1,4 @@
-import { OrderAggregate } from '../../domain/aggregate-roots/order.entity';
+import { OrderAggregate } from '../../domain/aggregate-roots/order.aggregate';
 import { OrderEventPublisherInterface } from '../ports/order-event.publisher.interface';
 import { OrderRepositoryInterface } from '../ports/order.repository.interface';
 import { v4 as uuid } from 'uuid';

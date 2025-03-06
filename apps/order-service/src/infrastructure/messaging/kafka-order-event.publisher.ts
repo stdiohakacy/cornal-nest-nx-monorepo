@@ -5,6 +5,7 @@ export class KafkaOrderEventPublisher implements OrderEventPublisherInterface {
   private kafka: Kafka;
   private producer: Producer;
   private readonly topic = 'order-created';
+
   constructor() {
     this.kafka = new Kafka({
       clientId: 'order-service',

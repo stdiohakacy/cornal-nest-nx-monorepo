@@ -1,5 +1,5 @@
-nx serve order-service
-nx serve payment-service
+nx serve order-service --verbose
+nx serve payment-service --verbose
 
 nx g @nx/nest:lib libs/order
 

@@ -1,7 +1,9 @@
-import { OrderRepositoryInterface } from '../../application/ports/order.repository.interface';
-import { OrderAggregate } from '../../domain/aggregate-roots/order.entity';
+import {
+  OrderAggregate,
+  OrderRepositoryInterface,
+} from '@cornal-nest-nx-monorepo/order';
 
-export class OrderRepositoryImpl implements OrderRepositoryInterface {
+export class OrderRepositoryInMemoryImpl implements OrderRepositoryInterface {
   private orders: OrderAggregate[] = [];
 
   async findById(id: string): Promise<OrderAggregate | null> {

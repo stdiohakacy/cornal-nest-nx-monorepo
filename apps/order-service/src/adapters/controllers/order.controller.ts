@@ -1,7 +1,7 @@
 import { CreateOrderUseCase } from '@cornal-nest-nx-monorepo/order';
 import { Body, Controller, Post } from '@nestjs/common';
-import { OrderAggregate } from 'libs/order/src/domain/aggregate-roots/order.entity';
-import { CreateOrderDto } from './dtos/create-order.dto';
+import { OrderAggregate } from '@cornal-nest-nx-monorepo/order';
+import { CreateOrderDto } from '../dtos/create-order.dto';
 
 @Controller('orders')
 export class OrderController {
