@@ -1,9 +1,7 @@
 import { OrderOrmEntity } from '../database/postgres/entities/order.orm-entity';
 import { OrderItemOrmEntity } from '../database/postgres/entities/order-item.orm-entity';
 import { OrderAggregate } from '@cornal-nest-nx-monorepo/order';
-import { OrderStatus } from 'libs/order/src/domain/value-objects/order-status.vo';
-import { Money } from 'libs/order/src/domain/value-objects/money.vo';
-import { OrderItem } from 'libs/order/src/domain/entities/order-item.entity';
+import { OrderStatus, Money, OrderItem } from '@cornal-nest-nx-monorepo/order';
 
 export class OrderPersistenceMapper {
   /**

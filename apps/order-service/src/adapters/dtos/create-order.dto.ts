@@ -1,4 +1,4 @@
-import { OrderItemDTO } from 'libs/order/src/application/dtos/order-item.dto';
+import { OrderItemDTO } from '@cornal-nest-nx-monorepo/order';
 
 export class CreateOrderDTO {
   items: OrderItemDTO[];

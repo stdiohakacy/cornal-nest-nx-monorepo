@@ -1,4 +1,3 @@
-// 📌 libs/payment/src/application/use-cases/create-payment.use-case.ts
 import { v4 as uuid } from 'uuid';
 import { PaymentAggregate } from '../../domain/aggregate-roots/payment.aggregate';
 import { PaymentRepositoryInterface } from '../ports/payment.repository.interface';

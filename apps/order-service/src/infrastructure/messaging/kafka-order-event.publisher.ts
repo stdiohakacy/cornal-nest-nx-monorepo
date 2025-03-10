@@ -1,5 +1,5 @@
 import { Kafka, Producer } from 'kafkajs';
-import { OrderEventPublisherInterface } from 'libs/order/src/application/ports/order-event.publisher.interface';
+import { OrderEventPublisherInterface } from '@cornal-nest-nx-monorepo/order';
 
 export class KafkaOrderEventPublisher implements OrderEventPublisherInterface {
   private kafka: Kafka;
