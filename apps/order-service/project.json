@@ -24,21 +24,21 @@
       "cwd": "apps/order-service"
     },
 
-    "m:g": {
+    "migration:generate": {
       "executor": "nx:run-commands",
       "options": {
         "command": "nx run order-service:typeorm migration:generate -d apps/order-service/src/infrastructure/database/postgres/postgres.config.ts apps/order-service/src/infrastructure/database/postgres/migrations/{args.name} "
       },
       "cwd": "apps/order-service"
     },
-    "m:u": {
+    "migration:up": {
       "executor": "nx:run-commands",
       "options": {
         "command": "nx run order-service:typeorm migration:run -d apps/order-service/src/infrastructure/database/postgres/postgres.config.ts"
       },
       "cwd": "apps/order-service"
     },
-    "m:d": {
+    "migration:down": {
       "executor": "nx:run-commands",
       "options": {
         "command": "nx run order-service:typeorm migration:revert -d apps/order-service/src/infrastructure/database/postgres/postgres.config.ts"

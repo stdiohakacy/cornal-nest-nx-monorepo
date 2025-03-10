@@ -11,7 +11,7 @@ export const postgresConfig: DataSourceOptions = {
   username: 'postgres',
   password: 'postgres',
   database: 'cornal_order_db',
-  entities: [join(__dirname, 'entities', '*.orm-entity.{ts,js}')],
+  // entities: [join(__dirname, 'entities', '*.orm-entity.{ts,js}')],
   migrations: [join(__dirname, 'migrations', '*.{ts,js}')],
   migrationsTableName: 'migrations',
   synchronize: false,
