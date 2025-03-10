@@ -13,3 +13,14 @@ npx typeorm migration:revert -d apps/order-service/src/infrastructure/database/p
 
 
 npx ts-node --project tsconfig.base.json apps/order-service/src/infrastructure/database/postgres/migration-run.ts
+
+npx typeorm migration:generate -d apps/order-service/src/infrastructure/database/postgres/ormconfig.ts OrderSchemaUpdate
+
+npx ts-node --project tsconfig.base.json apps/order-service/src/infrastructure/database/postgres/migrations/ -d apps/order-service/src/infrastructure/database/postgres/ormconfig.ts -n OrderSchemaUpdate
+
+
+<!-- npx ts-node --project tsconfig.base.json apps/order-service/src/infrastructure/database/postgres/migration-generate.ts OrderSchemaUpdate -->
+
+npx typeorm migration:generate apps/order-service/src/infrastructure/database/postgres/migrations/CreateOrderTable
+
+npx typeorm migration:generate apps/order-service/src/infrastructure/database/postgres/migrations/CreateOrderTable -d apps/order-service/src/infrastructure/database/postgres/ormconfig.ts

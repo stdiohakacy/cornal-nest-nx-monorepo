@@ -1,11 +1,8 @@
+import { CreateOrderDTO } from 'apps/order-service/src/adapters/dtos/create-order.dto';
 import { OrderAggregate } from '../../domain/aggregate-roots/order.aggregate';
+import { OrderFactory } from '../../domain/factories/order.factory';
 import { OrderEventPublisherInterface } from '../ports/order-event.publisher.interface';
 import { OrderRepositoryInterface } from '../ports/order.repository.interface';
-import { v4 as uuid } from 'uuid';
-
-interface CreateOrderDto {
-  items: { productId: string; quantity: number; price: number }[];
-}
 
 export class CreateOrderUseCase {
   constructor(
@@ -13,8 +10,8 @@ export class CreateOrderUseCase {
     private readonly eventPublisher: OrderEventPublisherInterface
   ) {}
 
-  async execute(dto: CreateOrderDto): Promise<OrderAggregate> {
-    const order = new OrderAggregate(uuid(), dto.items, 'CREATED');
+  async execute(dto: CreateOrderDTO): Promise<OrderAggregate> {
+    const order = OrderFactory.createOrder(dto.items);
     await this.orderRepository.save(order);
     await this.eventPublisher.publishOrderCreatedEvent(order.id, dto.items);
     return order;

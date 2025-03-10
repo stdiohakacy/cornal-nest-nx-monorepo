@@ -1,30 +1,37 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { OrderOrmEntity } from './order.orm-entity';
+import { OrderOrmEntity } from './entities/order.orm-entity';
 import { Repository } from 'typeorm';
 import { OrderAggregate } from 'libs/order/src/domain/aggregate-roots/order.aggregate';
 import { Injectable } from '@nestjs/common';
 import { OrderRepositoryInterface } from '@cornal-nest-nx-monorepo/order';
+import { OrderPersistenceMapper } from '../../mappers/order.persistence-mapper';
 
 @Injectable()
 export class OrderRepositoryImpl implements OrderRepositoryInterface {
   constructor(
     @InjectRepository(OrderOrmEntity)
-    private readonly ormRepository: Repository<OrderOrmEntity>
+    private readonly orderRepository: Repository<OrderOrmEntity>
   ) {}
 
+  async findAll(): Promise<OrderAggregate[]> {
+    const entities = await this.orderRepository.find({ relations: ['items'] });
+    return entities.map(OrderPersistenceMapper.toDomain);
+  }
+
   async findById(id: string): Promise<OrderAggregate | null> {
-    const ormEntity = await this.ormRepository.findOne({ where: { id } });
-    if (!ormEntity) return null;
-    return new OrderAggregate(ormEntity.id, ormEntity.items, 'CREATED');
+    const entity = await this.orderRepository.findOne({
+      where: { id },
+      relations: ['items'],
+    });
+    return entity ? OrderPersistenceMapper.toDomain(entity) : null;
   }
 
   async save(order: OrderAggregate): Promise<void> {
-    const ormEntity = new OrderOrmEntity();
+    const entity = OrderPersistenceMapper.toPersistence(order);
+    await this.orderRepository.save(entity);
+  }
 
-    ormEntity.id = order.id;
-    ormEntity.items = order.items;
-    ormEntity.status = order.status;
-
-    await this.ormRepository.save(ormEntity);
+  async deleteById(id: string): Promise<void> {
+    await this.orderRepository.delete({ id });
   }
 }

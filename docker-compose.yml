@@ -22,7 +22,7 @@ services:
       - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
       - ALLOW_PLAINTEXT_LISTENER=yes
   postgres:
-    image: postgres:latest
+    image: postgres:13
     container_name: cornal-postgres
     environment:
       POSTGRES_USER: postgres
