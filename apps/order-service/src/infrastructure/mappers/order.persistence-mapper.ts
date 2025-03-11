@@ -4,9 +4,6 @@ import { OrderAggregate } from '@cornal-nest-nx-monorepo/order';
 import { OrderStatus, Money, OrderItem } from '@cornal-nest-nx-monorepo/order';
 
 export class OrderPersistenceMapper {
-  /**
-   * ✅ Chuyển đổi từ OrderOrmEntity (DB) sang OrderAggregate (Domain)
-   */
   static toDomain(entity: OrderOrmEntity): OrderAggregate {
     if (!entity) {
       throw new Error('Cannot map null entity to domain');
@@ -33,9 +30,6 @@ export class OrderPersistenceMapper {
     );
   }
 
-  /**
-   * ✅ Chuyển đổi từ OrderAggregate (Domain) sang OrderOrmEntity (DB)
-   */
   static toPersistence(order: OrderAggregate): OrderOrmEntity {
     if (!order) {
       throw new Error('Cannot persist a null order');

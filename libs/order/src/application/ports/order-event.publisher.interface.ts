@@ -1,6 +1,5 @@
+import { OrderItemDTO } from '../dtos/order-item.dto';
+
 export interface OrderEventPublisherInterface {
-  publishOrderCreatedEvent(
-    order: string,
-    items: { productId: string; quantity: number; price: number }[]
-  ): void;
+  publishOrderCreatedEvent(order: string, items: OrderItemDTO[]): void;
 }

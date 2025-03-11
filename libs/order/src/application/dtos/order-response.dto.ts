@@ -1,14 +1,15 @@
+import { Type } from 'class-transformer';
 import {
-  ArrayNotEmpty,
-  IsArray,
   IsUUID,
+  IsEnum,
+  IsArray,
   ValidateNested,
+  ArrayNotEmpty,
+  IsString,
 } from 'class-validator';
 import { OrderItemDTO } from './order-item.dto';
-import { OrderStatusDTO } from './order-status.dto';
-import { Type } from 'class-transformer';
 
-export class OrderDTO {
+export class OrderResponseDTO {
   @IsUUID()
   id: string;
 
@@ -18,5 +19,6 @@ export class OrderDTO {
   @Type(() => OrderItemDTO)
   items: OrderItemDTO[];
 
-  status: OrderStatusDTO;
+  @IsString()
+  status: string;
 }

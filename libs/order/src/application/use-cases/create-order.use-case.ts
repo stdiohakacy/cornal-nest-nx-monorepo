@@ -1,8 +1,11 @@
-import { CreateOrderDTO } from 'apps/order-service/src/adapters/dtos/create-order.dto';
-import { OrderAggregate } from '../../domain/aggregate-roots/order.aggregate';
-import { OrderFactory } from '../../domain/factories/order.factory';
 import { OrderEventPublisherInterface } from '../ports/order-event.publisher.interface';
 import { OrderRepositoryInterface } from '../ports/order.repository.interface';
+import {
+  OrderResponseDTO,
+  OrderDTOMapper,
+  CreateOrderDTO,
+  OrderFactory,
+} from '@cornal-nest-nx-monorepo/order';
 
 export class CreateOrderUseCase {
   constructor(
@@ -10,10 +13,12 @@ export class CreateOrderUseCase {
     private readonly eventPublisher: OrderEventPublisherInterface
   ) {}
 
-  async execute(dto: CreateOrderDTO): Promise<OrderAggregate> {
+  async execute(dto: CreateOrderDTO): Promise<OrderResponseDTO> {
     const order = OrderFactory.createOrder(dto.items);
+
     await this.orderRepository.save(order);
     await this.eventPublisher.publishOrderCreatedEvent(order.id, dto.items);
-    return order;
+
+    return OrderDTOMapper.toDTO(order);
   }
 }

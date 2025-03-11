@@ -8,5 +8,5 @@
     "emitDecoratorMetadata": true,
     "target": "es2021"
   },
-  "include": ["src/**/*.ts", "src/adapters/controllers/order.controller.ts"]
+  "include": ["src/**/*.ts", "src/adapters/controllers/order.controller.ts", "../../libs/order/src/application/dtos/create-order.dto.ts", "../../libs/order/src/application/dtos/order-response.dto.ts"]
 }

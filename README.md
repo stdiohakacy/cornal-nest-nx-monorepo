@@ -8,4 +8,4 @@ curl -X POST http://localhost:3000/orders \
   -d '{"items":[{"productId":"p1","quantity":2}]}' 
 
 
-nx run order-service:m:d
+nx run order-service:migration:up
